@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipesapp.data.network.model.MealDetail
-import com.example.recipesapp.data.repository.ApiRepositoryImpl
 import com.example.recipesapp.domain.usecases.api.GetMealByNameUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,7 +16,7 @@ class SearchFragmentVM @Inject constructor(
 
     fun getMealByName(s: String) {
         viewModelScope.launch {
-            searchedMealLiveData.value = getMealByNameUseCase.getMealByName(s).meals[0]
+            searchedMealLiveData.value = getMealByNameUseCase.getMealByName(s)?.meals?.get(0)
         }
     }
 

@@ -2,7 +2,6 @@ package com.example.recipesapp.data.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import androidx.room.Dao
 import com.example.recipesapp.data.network.model.MealDB
 
 @Dao

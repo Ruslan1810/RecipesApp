@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.recipesapp.data.mapper.AppMapper
-import com.example.recipesapp.data.network.model.Category
 import com.example.recipesapp.data.network.model.Meal
 import com.example.recipesapp.data.network.model.MealDB
 import com.example.recipesapp.databinding.ItemFavoriteBinding

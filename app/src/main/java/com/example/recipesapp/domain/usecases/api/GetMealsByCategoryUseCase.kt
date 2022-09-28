@@ -6,8 +6,15 @@ import javax.inject.Inject
 
 class GetMealsByCategoryUseCase @Inject constructor(private val repository: ApiRepository){
 
-    suspend fun getMealsByCategory(categoryName:String): MealsResponse {
-        return repository.getMealsByCategory(categoryName)
-    }
+    suspend fun getMealsByCategory(categoryName:String): MealsResponse? {
+        val request  = repository.getMealsByCategory(categoryName)
 
+        if(request.failed){
+            return null
+        }
+        if(!request.isSuccessFull){
+            return null
+        }
+        return request.body
+    }
 }

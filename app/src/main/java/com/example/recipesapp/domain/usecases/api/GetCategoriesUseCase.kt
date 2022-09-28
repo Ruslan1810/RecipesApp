@@ -5,7 +5,15 @@ import com.example.recipesapp.domain.repository.ApiRepository
 import javax.inject.Inject
 
 class GetCategoriesUseCase @Inject constructor(private val repository: ApiRepository) {
-    suspend fun getCategories(): CategoryResponse {
-        return repository.getCategories()
+    suspend fun getCategories(): CategoryResponse? {
+        val request  = repository.getCategories()
+
+        if(request.failed){
+            return null
+        }
+        if(!request.isSuccessFull){
+            return null
+        }
+        return request.body
     }
 }

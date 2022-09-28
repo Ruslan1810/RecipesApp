@@ -1,12 +1,9 @@
 package com.example.recipesapp.presentation.viemodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipesapp.data.network.model.MealDB
-import com.example.recipesapp.data.repository.DbRepositoryImpl
 import com.example.recipesapp.domain.usecases.db.DeleteMealUseCase
 import com.example.recipesapp.domain.usecases.db.GetAllSavedMealsUseCase
 import com.example.recipesapp.domain.usecases.db.InsertFavoriteUseCase

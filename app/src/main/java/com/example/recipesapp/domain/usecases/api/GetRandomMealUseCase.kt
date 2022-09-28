@@ -5,7 +5,15 @@ import com.example.recipesapp.domain.repository.ApiRepository
 import javax.inject.Inject
 
 class GetRandomMealUseCase @Inject constructor(private val repository: ApiRepository) {
-    suspend fun getRandomMeal(): RandomMealResponse {
-        return repository.getRandomMeal()
+    suspend fun getRandomMeal(): RandomMealResponse? {
+        val request  = repository.getRandomMeal()
+
+        if(request.failed){
+            return null
+        }
+        if(!request.isSuccessFull){
+            return null
+        }
+        return request.body
     }
 }

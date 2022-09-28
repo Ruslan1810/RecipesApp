@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipesapp.R
 import com.example.recipesapp.data.network.model.Meal
-import com.example.recipesapp.data.network.model.MealDB
 import com.example.recipesapp.databinding.FragmentFavoriteBinding
 import com.example.recipesapp.presentation.AppProject
 import com.example.recipesapp.presentation.adapter.FavoriteAdapter

@@ -49,7 +49,6 @@ class HomeFragmentVM @Inject constructor(
         favoritesMealsLiveData = getAllSavedMealsUseCase.getAllSavedMeals()
     }
 
-
     fun getPopularMealsLiveData(): LiveData<MealsResponse> {
         return popularMealsLiveData
     }
