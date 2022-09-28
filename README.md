@@ -25,7 +25,7 @@ RecipesApp - это приложение рецептов блюд разных 
 - Coroutines
 - view binding
 - Glid
-
+- Dagger2
 
 
 
