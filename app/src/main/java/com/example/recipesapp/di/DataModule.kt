@@ -12,6 +12,7 @@ import com.example.recipesapp.domain.repository.DbRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 interface DataModule {
@@ -22,13 +23,13 @@ interface DataModule {
     @Binds
     fun bindDbRepository(impl: DbRepositoryImpl): DbRepository
 
-    companion object{
-
+    companion object {
+        @Singleton
         @Provides
         fun provideMealDao(application: Application): MealDao {
             return MealsDatabase.getInstance(application).dao()
         }
-
+        @Singleton
         @Provides
         fun provideApiService(): ApiService {
             return ApiFactory.apiService

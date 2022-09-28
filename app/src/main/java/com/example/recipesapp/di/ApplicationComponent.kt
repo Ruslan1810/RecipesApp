@@ -5,7 +5,9 @@ import android.app.Application
 import com.example.recipesapp.presentation.ui.*
 import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Singleton
 
+@Singleton
 @Component(modules = [DataModule::class, ViewModelModule::class])
 interface ApplicationComponent {
     fun inject(activity: Activity)
