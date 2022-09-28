@@ -3,15 +3,16 @@ package com.example.recipesapp.data.repository
 import com.example.recipesapp.data.network.model.CategoryResponse
 import com.example.recipesapp.data.network.model.MealsResponse
 import com.example.recipesapp.data.network.model.RandomMealResponse
-import com.example.recipesapp.data.network.retrofit.ApiFactory
+import com.example.recipesapp.data.network.retrofit.ApiService
 import com.example.recipesapp.domain.repository.ApiRepository
+import javax.inject.Inject
 
-object ApiRepositoryImpl: ApiRepository {
-
-    private val apiservice = ApiFactory.apiService
+class ApiRepositoryImpl @Inject constructor(
+    private val apiservice: ApiService
+) : ApiRepository {
 
     override suspend fun getCategories(): CategoryResponse {
-       return apiservice.getCategories()
+        return apiservice.getCategories()
     }
 
     override suspend fun getMealsByCategory(category: String): MealsResponse {

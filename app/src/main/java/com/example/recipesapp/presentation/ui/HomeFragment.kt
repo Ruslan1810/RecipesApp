@@ -15,13 +15,16 @@ import com.example.recipesapp.R
 import com.example.recipesapp.data.network.model.Meal
 import com.example.recipesapp.data.network.model.RandomMealResponse
 import com.example.recipesapp.databinding.FragmentHomeBinding
+import com.example.recipesapp.presentation.AppProject
 import com.example.recipesapp.presentation.adapter.CategoryAdapter
 import com.example.recipesapp.presentation.adapter.PopularAdapter
 import com.example.recipesapp.presentation.viemodel.HomeFragmentVM
+import com.example.recipesapp.presentation.viemodel.ViewModelFactory
 import com.example.recipesapp.utils.CATEGORY_NAME
 import com.example.recipesapp.utils.MEAL_ID
 import com.example.recipesapp.utils.MEAL_NAME
 import com.example.recipesapp.utils.MEAL_THUMB
+import javax.inject.Inject
 
 class HomeFragment : Fragment() {
 
@@ -29,13 +32,19 @@ class HomeFragment : Fragment() {
     private val binding: FragmentHomeBinding
         get() = _binding ?: throw RuntimeException("FragmentHomeBinding is null")
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: HomeFragmentVM
     private lateinit var popularAdapter: PopularAdapter
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var randomMealResponse: RandomMealResponse
     private var randomMealId = ""
+    private val component by lazy{
+        (requireActivity().application as AppProject).component
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
         popularAdapter = PopularAdapter()
         categoryAdapter = CategoryAdapter()
@@ -55,7 +64,7 @@ class HomeFragment : Fragment() {
         preparePopularRecyclerView()
         prepareCategoryRecyclerView()
 
-        viewModel = ViewModelProvider(this)[HomeFragmentVM::class.java]
+        viewModel = ViewModelProvider(this,viewModelFactory)[HomeFragmentVM::class.java]
         observerPopularMeals()
         observerRandomMeals()
         observerCategory()

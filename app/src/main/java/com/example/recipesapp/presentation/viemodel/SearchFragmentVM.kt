@@ -8,10 +8,12 @@ import com.example.recipesapp.data.network.model.MealDetail
 import com.example.recipesapp.data.repository.ApiRepositoryImpl
 import com.example.recipesapp.domain.usecases.api.GetMealByNameUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SearchFragmentVM : ViewModel() {
+class SearchFragmentVM @Inject constructor(
+    private val getMealByNameUseCase: GetMealByNameUseCase
+): ViewModel() {
     private var searchedMealLiveData = MutableLiveData<MealDetail>()
-    private val getMealByNameUseCase = GetMealByNameUseCase(ApiRepositoryImpl)
 
     fun getMealByName(s: String) {
         viewModelScope.launch {

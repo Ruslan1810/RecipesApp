@@ -12,13 +12,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.recipesapp.R
 import com.example.recipesapp.data.network.model.Meal
 import com.example.recipesapp.databinding.FragmentMealsByCategoryBinding
+import com.example.recipesapp.presentation.AppProject
 import com.example.recipesapp.presentation.adapter.MealsAdapter
 import com.example.recipesapp.presentation.viemodel.MealsByCategoryFragmentVM
+import com.example.recipesapp.presentation.viemodel.ViewModelFactory
 import com.example.recipesapp.utils.CATEGORY_NAME
 import com.example.recipesapp.utils.MEAL_ID
 import com.example.recipesapp.utils.MEAL_NAME
 import com.example.recipesapp.utils.MEAL_THUMB
-
+import javax.inject.Inject
 
 class MealsByCategoryFragment: Fragment() {
 
@@ -27,9 +29,15 @@ class MealsByCategoryFragment: Fragment() {
     private val binding: FragmentMealsByCategoryBinding
         get() = _binding ?: throw RuntimeException("FragmentMealsByCategoryBinding is null")
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     private lateinit var mealsAdapter: MealsAdapter
+    private val component by lazy{
+        (requireActivity().application as AppProject).component
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
        mealsAdapter = MealsAdapter()
     }
@@ -47,7 +55,7 @@ class MealsByCategoryFragment: Fragment() {
 
         prepareMealsByCategoryRecyclerView()
 
-        viewModel = ViewModelProvider(this)[MealsByCategoryFragmentVM::class.java]
+        viewModel = ViewModelProvider(this,viewModelFactory)[MealsByCategoryFragmentVM::class.java]
         observerMealsByCategory()
         onMealsByCategoryClick()
     }

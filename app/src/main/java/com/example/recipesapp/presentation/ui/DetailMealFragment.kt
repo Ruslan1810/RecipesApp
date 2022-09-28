@@ -14,10 +14,13 @@ import com.example.recipesapp.R
 import com.example.recipesapp.data.mapper.AppMapper
 import com.example.recipesapp.data.network.model.MealDB
 import com.example.recipesapp.databinding.FragmentDetailInfoBinding
+import com.example.recipesapp.presentation.AppProject
 import com.example.recipesapp.presentation.viemodel.DetailMealFragmentVM
+import com.example.recipesapp.presentation.viemodel.ViewModelFactory
 import com.example.recipesapp.utils.MEAL_ID
+import javax.inject.Inject
 
-class DetailMealFragment : Fragment() {
+class DetailMealFragment: Fragment() {
 
     private lateinit var youtubeLink: String
     private lateinit var mealId: String
@@ -26,9 +29,15 @@ class DetailMealFragment : Fragment() {
     private val binding: FragmentDetailInfoBinding
         get() = _binding ?: throw RuntimeException("FragmentDetailInfoBinding is null")
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: DetailMealFragmentVM
+    private val component by lazy{
+        (requireActivity().application as AppProject).component
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
         arguments?.let {
             mealId = it.getString(MEAL_ID).toString()
@@ -46,7 +55,7 @@ class DetailMealFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this)[DetailMealFragmentVM::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[DetailMealFragmentVM::class.java]
 
         observerMealDetail()
 
@@ -71,9 +80,7 @@ class DetailMealFragment : Fragment() {
                 binding.collapsingToolbar.title = it.meals[0].strMeal
                 binding.collapsingToolbar.setCollapsedTitleTextColor(resources.getColor(R.color.white))
                 binding.collapsingToolbar.setExpandedTitleColor(resources.getColor(R.color.white))
-
             }
-
         }
     }
 

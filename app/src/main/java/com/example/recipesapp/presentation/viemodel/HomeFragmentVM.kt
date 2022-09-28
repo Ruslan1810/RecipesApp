@@ -1,26 +1,26 @@
 package com.example.recipesapp.presentation.viemodel
 
-import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.recipesapp.data.network.model.CategoryResponse
 import com.example.recipesapp.data.network.model.MealDB
 import com.example.recipesapp.data.network.model.MealsResponse
 import com.example.recipesapp.data.network.model.RandomMealResponse
-import com.example.recipesapp.data.repository.ApiRepositoryImpl
-import com.example.recipesapp.data.repository.DbRepositoryImpl
 import com.example.recipesapp.domain.usecases.api.GetCategoriesUseCase
 import com.example.recipesapp.domain.usecases.api.GetPopularMealsUseCase
 import com.example.recipesapp.domain.usecases.api.GetRandomMealUseCase
 import com.example.recipesapp.domain.usecases.db.GetAllSavedMealsUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeFragmentVM(application: Application): AndroidViewModel(application){
-    private val dbRepository = DbRepositoryImpl(application)
-
-    private val getPopularUseCase = GetPopularMealsUseCase(ApiRepositoryImpl)
-    private val getRandomMealUseCase = GetRandomMealUseCase(ApiRepositoryImpl)
-    private val getCategoriesUseCase = GetCategoriesUseCase(ApiRepositoryImpl)
-    private val getAllSavedMealsUseCase = GetAllSavedMealsUseCase(dbRepository)
+class HomeFragmentVM @Inject constructor(
+    private val getAllSavedMealsUseCase: GetAllSavedMealsUseCase,
+    private val getPopularUseCase: GetPopularMealsUseCase,
+    private val getRandomMealUseCase: GetRandomMealUseCase,
+    private val getCategoriesUseCase: GetCategoriesUseCase
+) : ViewModel() {
 
     private var popularMealsLiveData = MutableLiveData<MealsResponse>()
     private var randomMealLiveData = MutableLiveData<RandomMealResponse>()
@@ -46,7 +46,7 @@ class HomeFragmentVM(application: Application): AndroidViewModel(application){
     }
 
     private fun getFavoritesMeals() {
-            favoritesMealsLiveData = getAllSavedMealsUseCase.getAllSavedMeals()
+        favoritesMealsLiveData = getAllSavedMealsUseCase.getAllSavedMeals()
     }
 
 
@@ -61,12 +61,13 @@ class HomeFragmentVM(application: Application): AndroidViewModel(application){
     fun getCategoriesLiveData(): LiveData<CategoryResponse> {
         return categoriesLiveData
     }
+
     fun getFavoritesMealsLiveData(): LiveData<List<MealDB>>? {
         return favoritesMealsLiveData
     }
 
 
-    init{
+    init {
         getPopularMeals()
         getRandomMeal()
         getCategories()

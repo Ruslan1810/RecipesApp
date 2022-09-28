@@ -1,13 +1,18 @@
 package com.example.recipesapp.data.repository
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
+import com.example.recipesapp.data.db.MealDao
 import com.example.recipesapp.data.db.MealsDatabase
 import com.example.recipesapp.data.network.model.MealDB
 import com.example.recipesapp.domain.repository.DbRepository
+import javax.inject.Inject
 
-class DbRepositoryImpl(val context: Context): DbRepository {
-    private val mealDao = MealsDatabase.getInstance(context).dao()
+class DbRepositoryImpl @Inject constructor(
+    private val application: Application,
+    private val mealDao: MealDao
+    ): DbRepository {
 
     override suspend fun insertFavorite(meal: MealDB) {
         mealDao.insertFavorite(meal)

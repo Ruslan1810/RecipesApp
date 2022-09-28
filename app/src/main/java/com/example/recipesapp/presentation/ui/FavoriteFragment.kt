@@ -16,12 +16,15 @@ import com.example.recipesapp.R
 import com.example.recipesapp.data.network.model.Meal
 import com.example.recipesapp.data.network.model.MealDB
 import com.example.recipesapp.databinding.FragmentFavoriteBinding
+import com.example.recipesapp.presentation.AppProject
 import com.example.recipesapp.presentation.adapter.FavoriteAdapter
 import com.example.recipesapp.presentation.viemodel.FavoriteFragmentVM
+import com.example.recipesapp.presentation.viemodel.ViewModelFactory
 import com.example.recipesapp.utils.MEAL_ID
 import com.example.recipesapp.utils.MEAL_NAME
 import com.example.recipesapp.utils.MEAL_THUMB
 import com.google.android.material.snackbar.Snackbar
+import javax.inject.Inject
 
 
 class FavoriteFragment : Fragment() {
@@ -30,9 +33,15 @@ class FavoriteFragment : Fragment() {
     private val binding: FragmentFavoriteBinding
         get() = _binding ?: throw RuntimeException("FragmentFavoriteBinding is null")
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: FavoriteFragmentVM
+    private val component by lazy{
+        (requireActivity().application as AppProject).component
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
         favoriteAdapter = FavoriteAdapter()
     }
@@ -49,7 +58,7 @@ class FavoriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         preparePopularRecyclerView()
-        viewModel = ViewModelProvider(this)[FavoriteFragmentVM::class.java]
+        viewModel = ViewModelProvider(this,viewModelFactory)[FavoriteFragmentVM::class.java]
 
         observerFavoritesMealsLiveData()
         onFavoriteMelClick()

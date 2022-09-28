@@ -5,13 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipesapp.data.network.model.CategoryResponse
-import com.example.recipesapp.data.repository.ApiRepositoryImpl
 import com.example.recipesapp.domain.usecases.api.GetCategoriesUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AllCategoriesFragmentVM: ViewModel() {
+class AllCategoriesFragmentVM @Inject constructor(
+    private val getCategoriesUseCase: GetCategoriesUseCase
+) : ViewModel() {
 
-    private val getCategoriesUseCase = GetCategoriesUseCase(ApiRepositoryImpl)
     private var categoriesLiveData = MutableLiveData<CategoryResponse>()
 
     private fun getCategories() {
@@ -24,7 +25,7 @@ class AllCategoriesFragmentVM: ViewModel() {
         return categoriesLiveData
     }
 
-    init{
+    init {
         getCategories()
     }
 }

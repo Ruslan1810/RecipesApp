@@ -9,8 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.recipesapp.databinding.FragmentSearchBinding
+import com.example.recipesapp.presentation.AppProject
 import com.example.recipesapp.presentation.adapter.MealsAdapter
 import com.example.recipesapp.presentation.viemodel.SearchFragmentVM
+import com.example.recipesapp.presentation.viemodel.ViewModelFactory
+import javax.inject.Inject
 
 class SearchFragment : Fragment() {
     private lateinit var searchAdapter: MealsAdapter
@@ -18,17 +21,20 @@ class SearchFragment : Fragment() {
     private val binding: FragmentSearchBinding
         get() = _binding ?: throw RuntimeException("FragmentSearchBinding is null")
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: SearchFragmentVM
     private var mealId = ""
     private var mealStr = ""
     private var mealThub = ""
+    private val component by lazy{
+        (requireActivity().application as AppProject).component
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            param1 = it.getString(ARG_PARAM1)
-//            param2 = it.getString(ARG_PARAM2)
-//        }
+
         searchAdapter = MealsAdapter()
     }
 
@@ -43,7 +49,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this)[SearchFragmentVM::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[SearchFragmentVM::class.java]
         onSearchClick()
         observeSearchLiveData()
     }
